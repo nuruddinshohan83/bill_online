@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router'
 import { supabase } from '../utils/supabaseClient';
+import { data } from 'autoprefixer';
 
 function App() {
   const [user, setUser] = useState(null);
-  const [userId, setUserId] = useState(null);
-
+  const [data, setData] = useState([])
+  const [error, setError] = useState(null)
   const router = useRouter()
   useEffect(() => {
     /* when the app loads, check to see if the user is signed in */
@@ -15,6 +16,24 @@ function App() {
       checkUser();
     });
   }, [])
+  useEffect(() => {
+    async function exist() {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select("id")
+        .eq('id', user.id)
+      setData(data)
+      setError(error)
+
+      console.log(data)
+      console.log(error)
+
+    }
+    if (user) {
+      exist()
+    }
+  })
+
   async function checkUser() {
     /* if a user is signed in, update local state */
 
@@ -22,11 +41,10 @@ function App() {
     //const userId = supabase.auth.user
     console.log(user)
     if (user) {
-      setUserId(user.id)
       setUser(user)
     }
   }
-  async function signInWithGithub() {
+  async function signInWithGoogle() {
     /* authenticate with GitHub */
     await supabase.auth.signIn({
       provider: 'google'
@@ -39,17 +57,27 @@ function App() {
   }
   if (user) {
     //router.push("/test")
-    return (
-      <div className="App">
-        <h1>Hello, {user.email}</h1>
-        <button onClick={signOut}>Sign out</button>
-      </div>
-    )
+    if (data.length == 0) {
+      router.push("/userinfo")
+      /*
+       return (<div>
+         <p>empty</p>
+       </div>)
+      */
+    }
+    else {
+      return (
+        <div className="App">
+          <h1>Hello, {user.email}</h1>
+          <button onClick={signOut}>Sign out</button>
+        </div>
+      )
+    }
   }
   return (
     <div className="App">
       <h1>Hello, please sign in!</h1>
-      <button onClick={signInWithGithub}>Sign In</button>
+      <button onClick={signInWithGoogle}>Sign In</button>
     </div>
   );
 }

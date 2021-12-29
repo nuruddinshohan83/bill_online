@@ -9,8 +9,6 @@ export default function ClientInput() {
     const [pdata, setPdata] = useState("")
     const [perror, setPerror] = useState("")
     const [user, setUser] = useState(null)
-    const [num, setNum] = useState(0)
-    const [child, setChild] = useState([])
 
     const formik = useFormik({
         initialValues: {
@@ -91,62 +89,89 @@ export default function ClientInput() {
             func()
         },
     })
-
+    //block text-gray-500 font-medium text-base mb-2
+    //bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500
 
     return (
         <div>
-            <form onSubmit={formik.handleSubmit}>
-                <label htmlFor="name"> Name</label>
-                <input
-                    id="name"
-                    name="name"
-                    type="text"
-                    onChange={formik.handleChange}
-                    value={formik.values.name}
-                />
-                <label htmlFor="address">Address</label>
-                <input
-                    id="address"
-                    name="address"
-                    type="text"
-                    onChange={formik.handleChange}
-                    value={formik.values.lastName}
-                />
-                <label htmlFor="phone">Phone Number</label>
-                <input
-                    id="phone"
-                    name="phone"
-                    type="text"
-                    onChange={formik.handleChange}
-                    value={formik.values.phone}
-                />
-                {cerror && <p>{error.message}</p>}
-                {cdata && <p>Sucessful</p>}
-                <button type="submit">Submit</button>
-            </form>
+            <div className='w-2/4 mx-32'>
+                <p className='text-gray-500 font-medium text-2xl my-8 px-8 pt-6  mb-4'>Enter your client's details</p>
 
-            <form onSubmit={formikCli.handleSubmit}>
-                <label htmlFor="pname">Product Name</label>
-                <input
-                    id="pname"
-                    name="pname"
-                    type="text"
-                    onChange={formikCli.handleChange}
-                    value={formikCli.values.pname}
-                />
-                <label htmlFor="price">Price </label>
-                <input
-                    id="price"
-                    name="price"
-                    type="text"
-                    onChange={formikCli.handleChange}
-                    value={formikCli.values.price}
-                />
+                <form
+                    className='bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4'
+                    onSubmit={formik.handleSubmit}>
+                    <label htmlFor="name" className='block text-gray-500 font-medium text-base mb-2'> Name</label>
+                    <input
+                        className='bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500'
+                        id="name"
+                        name="name"
+                        type="text"
+                        onChange={formik.handleChange}
+                        value={formik.values.name}
+                    />
+                    <label
+                        className='block text-gray-500 font-medium text-base mb-2'
+                        htmlFor="address">Address</label>
+                    <input
+                        className='bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500'
+                        id="address"
+                        name="address"
+                        type="text"
+                        onChange={formik.handleChange}
+                        value={formik.values.lastName}
+                    />
+                    <label
+                        className='block text-gray-500 font-medium text-base mb-2'
+                        htmlFor="phone">Phone Number</label>
+                    <input
+                        className='bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500'
+                        id="phone"
+                        name="phone"
+                        type="text"
+                        onChange={formik.handleChange}
+                        value={formik.values.phone}
+                    />
+                    {cerror && <p>{cerror.message}</p>}
+                    {cdata && <p>Sucessful</p>}
+                    <button
+                        className='shadow bg-purple-500 hover:bg-purple-600 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded mt-4'
+                        type="submit">Submit</button>
+                </form>
+            </div>
+            <div className='w-2/4 mx-32'>
+                <p className='text-gray-500 font-medium text-2xl my-8 px-8 pt-6  mb-4'>Enter your product's details</p>
+                <form
+                    className='bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4'
+                    onSubmit={formikCli.handleSubmit}>
+                    <label
+                        className='block text-gray-500 font-medium text-base mb-2'
+                        htmlFor="pname">Product Name</label>
+                    <input
+                        className='bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500'
+                        id="pname"
+                        name="pname"
+                        type="text"
+                        onChange={formikCli.handleChange}
+                        value={formikCli.values.pname}
+                    />
+                    <label
+                        className='block text-gray-500 font-medium text-base mb-2'
+                        htmlFor="price">Price </label>
+                    <input
+                        className='bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500'
 
-                {perror && <p>{perror.message}</p>}
-                {pdata && <p>Sucessful</p>}
-                <button type="submit">Submit</button>
-            </form>
+                        id="price"
+                        name="price"
+                        type="text"
+                        onChange={formikCli.handleChange}
+                        value={formikCli.values.price}
+                    />
+
+                    {perror && <p>{perror.message}</p>}
+                    {pdata && <p>Sucessful</p>}
+                    <button className='shadow bg-purple-500 hover:bg-purple-600 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded mt-4' type="submit">Submit</button>
+                </form>
+            </div>
         </div>
     )
 }
