@@ -9,7 +9,6 @@ export default function ClientInput() {
     const [pdata, setPdata] = useState("")
     const [perror, setPerror] = useState("")
     const [user, setUser] = useState(null)
-    const [cId, setCId] = useState("")
     const [num, setNum] = useState(0)
     const [child, setChild] = useState([])
 

@@ -8,7 +8,7 @@ import ClientInput from '../../components/ClientInput';
 export default function UserPage() {
 
     return (
-        <div>
+        <div className=''>
             <ClientInput />
         </div >
     )
