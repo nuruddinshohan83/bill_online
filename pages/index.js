@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
-
+import { useRouter } from 'next/router'
 import { supabase } from '../utils/supabaseClient';
 
 function App() {
   const [user, setUser] = useState(null);
+  const [userId, setUserId] = useState(null);
+
+  const router = useRouter()
   useEffect(() => {
     /* when the app loads, check to see if the user is signed in */
     checkUser();
@@ -14,8 +17,14 @@ function App() {
   }, [])
   async function checkUser() {
     /* if a user is signed in, update local state */
+
     const user = supabase.auth.user();
-    setUser(user);
+    //const userId = supabase.auth.user
+    console.log(user)
+    if (user) {
+      setUserId(user.id)
+      setUser(user)
+    }
   }
   async function signInWithGithub() {
     /* authenticate with GitHub */
@@ -29,6 +38,7 @@ function App() {
     setUser(null);
   }
   if (user) {
+    //router.push("/test")
     return (
       <div className="App">
         <h1>Hello, {user.email}</h1>
