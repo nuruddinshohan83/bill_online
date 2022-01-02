@@ -1,5 +1,5 @@
 import React from 'react'
-import Invoice from "/Invoice"
+import Invoice from "./Invoice"
 import Pdf from "react-to-pdf";
 const options = {
     orientation: 'landscape',
@@ -7,7 +7,7 @@ const options = {
 
 };
 const ref = React.createRef();
-export default function index() {
+export default function index(props) {
     return (
         <div className='w-full'>
 

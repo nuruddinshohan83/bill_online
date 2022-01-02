@@ -3,12 +3,33 @@ import { useState, useEffect } from 'react'
 import { supabase } from '../utils/supabaseClient';
 import { useFormik } from 'formik'
 import { v4 as uuidv4 } from 'uuid'
+import PDF from '../components/PDF'
 export default function ClientInput() {
     const [cdata, setCdata] = useState("")
     const [cerror, setCerror] = useState("")
     const [pdata, setPdata] = useState("")
     const [perror, setPerror] = useState("")
     const [user, setUser] = useState(null)
+    const [company, setCompany] = useState(null)
+
+    useEffect(() => {
+        async function fetchUser() {
+            const userv = supabase.auth.user();
+            setUser(userv)
+            if (user) {
+                console.log("use effect", user.id)
+                const { data, error } = await supabase
+                    .from('profiles')
+                    .select('*')
+                    .eq('id', user.id)
+                setCompany(data)
+
+                console.log(error)
+                console.log(data)
+            }
+        }
+        fetchUser()
+    }, [])
 
     const formik = useFormik({
         initialValues: {
@@ -20,9 +41,7 @@ export default function ClientInput() {
         onSubmit: values => {
             async function insertClient() {
                 console.log("inserting Client")
-                const userv = supabase.auth.user();
-                setUser(userv)
-                console.log(user)
+
 
 
                 if (user) {
@@ -42,9 +61,6 @@ export default function ClientInput() {
 
                     console.log(error)
                     console.log(data)
-
-                    console.log("Client ID", cId)
-
                 }
 
             }
@@ -62,7 +78,7 @@ export default function ClientInput() {
             async function func() {
 
                 console.log("products", user.id)
-                console.log(cId, values.price, values.pname)
+                console.log(values.price, values.pname)
                 console.log(cdata[0].id)
                 if (user) {
                     const { data, error } = await supabase
@@ -95,6 +111,18 @@ export default function ClientInput() {
     return (
         <div>
             <div className='w-2/4 mx-32'>
+                {
+                    company && <div>
+                        <p className='text-gray-500 font-bold text-3xl my-8 px-8 pt-6  mb-4'>Company</p>
+                        <p className=' text-gray-500  text-xl   px-8 '> <span className='font-bold'>Name: </span>  {company[0].companyname}</p>
+                        <p className=' text-gray-500  text-xl   px-8 '> <span className='font-bold'>Address: </span>  {company[0].address}</p>
+                        <p className=' text-gray-500  text-xl   px-8 '> <span className='font-bold'>Phone: </span>  {company[0].phonenum}</p>
+
+                    </div>
+
+
+                }
+
                 <p className='text-gray-500 font-medium text-2xl my-8 px-8 pt-6  mb-4'>Enter your client's details</p>
 
                 <form
@@ -131,8 +159,8 @@ export default function ClientInput() {
                         onChange={formik.handleChange}
                         value={formik.values.phone}
                     />
-                    {cerror && <p>{cerror.message}</p>}
-                    {cdata && <p>Sucessful</p>}
+                    {cerror && <p className='text-red-500 font-bold'>{cerror.message}</p>}
+                    {cdata && <p className='text-green-500 font-bold'>Sucessful</p>}
                     <button
                         className='shadow bg-purple-500 hover:bg-purple-600 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded mt-4'
                         type="submit">Submit</button>
@@ -167,10 +195,12 @@ export default function ClientInput() {
                         value={formikCli.values.price}
                     />
 
-                    {perror && <p>{perror.message}</p>}
-                    {pdata && <p>Sucessful</p>}
+                    {perror && <p className='text-red-500 font-bold'>{perror.message}</p>}
+                    {pdata && <p className='text-green-500 font-bold'>Sucessful</p>}
                     <button className='shadow bg-purple-500 hover:bg-purple-600 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded mt-4' type="submit">Submit</button>
                 </form>
+                {cdata && pdata && <p>printable</p>}
+                <PDF company={company} profile={pdata} client={cdata} ></PDF>
             </div>
         </div>
     )

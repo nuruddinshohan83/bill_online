@@ -108,7 +108,7 @@ const UserInfo = () => {
                     {error && <p className='text-red-500 font-bold'>{error.message}</p>}
                     {data && <p className='text-green-500 font-bold'>Sucessful</p>}
                     <button type="submit" className='shadow bg-purple-500 hover:bg-purple-600 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded mt-4' >Submit</button>
-
+                    <SignOut></SignOut>
                 </form>
             </div>
         </body>

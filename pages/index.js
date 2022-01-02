@@ -18,6 +18,7 @@ function App() {
   }, [])
   useEffect(() => {
     async function exist() {
+      console.log("exit func")
       const { data, error } = await supabase
         .from('profiles')
         .select("id")
@@ -32,7 +33,7 @@ function App() {
     if (user) {
       exist()
     }
-  })
+  }, [user])
 
   async function checkUser() {
     /* if a user is signed in, update local state */
@@ -58,14 +59,17 @@ function App() {
   if (user) {
     //router.push("/test")
     if (data.length == 0) {
-      router.push("/userinfo")
-      /*
-       return (<div>
-         <p>empty</p>
-       </div>)
-      */
+
+
+      return (<div>
+        <p>empty</p>
+        <button onClick={signOut}>Sign out</button>
+      </div>)
+
+
     }
     else {
+
       return (
         <div className="App">
           <h1>Hello, {user.email}</h1>
